@@ -28,7 +28,6 @@ public class ClassicBoard extends JPanel {
     private BackgroundImage background;
     private Timer timer;
     private JFrame frame;
-    private Sounds alienshipSound;
     private File file;
     private JButton back;
     private JButton load;
@@ -70,19 +69,9 @@ public class ClassicBoard extends JPanel {
     private String score = " ";
     private String message;
     private String explosion = "images/explosion.gif";
-    private String alienSoundLocation = "sounds/Alien.wav";
-    private String laserSoundLocation = "sounds/Laser.wav";
-    private String beepSoundLocation = "sounds/Beep.wav";
-    private String goSoundLocation = "sounds/Go.wav";
-    private String alienshipSoundLocation = "sounds/Alienship.wav";
-    private String powerupSoundLocation = "sounds/Powerup.wav";
-    private String fireballSoundLocation = "sounds/Fireball.wav";
-    private String explosionSoundLocation = "sounds/Explosion.wav";
-    private String buttonSoundLocation = "sounds/Button.wav";
     
     public ClassicBoard( JFrame f ) {
         background = new BackgroundImage();
-        alienshipSound = new Sounds( alienshipSoundLocation );
         title = new ImageIcon( getClass().getResource( "images/classicmode.png" ) );
         addKeyListener( new KeyInputHandler() );
         setFocusable( true );
@@ -92,6 +81,8 @@ public class ClassicBoard extends JPanel {
         setDoubleBuffered( true );
         frame = f;
         frame.setCursor( new Cursors( "curRed.png", "Red" ).getCursor() );
+		frame.setVisible(false);
+		frame.setVisible(true);
         
         back = new JButton( new ImageIcon( getClass().getResource( "images/back_arrow2.png" ) ) );
         back.setRolloverIcon( new ImageIcon( getClass().getResource( "images/back_arrow.png" ) ) );
@@ -104,7 +95,7 @@ public class ClassicBoard extends JPanel {
                 frame.remove( save );
                 setVisible( false );
                 frame.add( new ModesPanel( frame ) );
-                Sounds.loadAndPlay( buttonSoundLocation, 0 );
+                new Sound("sounds/Button.wav").play();
             }
         });
         frame.add( back );
@@ -116,7 +107,7 @@ public class ClassicBoard extends JPanel {
         load.setBounds( 530, 550, 200, 50 );
         load.addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                Sounds.loadAndPlay( buttonSoundLocation, 0 );
+                new Sound("sounds/Button.wav").play();
                 chooser = new JFileChooser( new File( "." ) );
                 chooser.setDialogTitle( "Load Game" );
                 chooser.setAcceptAllFileFilterUsed( false );
@@ -173,7 +164,7 @@ public class ClassicBoard extends JPanel {
         save.setBounds( 300, 550, 200, 50 );
         save.addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                Sounds.loadAndPlay( buttonSoundLocation, 0 );  
+                new Sound("sounds/Button.wav").play(); 
                 chooser = new JFileChooser( new File( "." ) );
                 chooser.setDialogTitle( "Save Game" );
                 chooser.setAcceptAllFileFilterUsed( false );
@@ -612,28 +603,28 @@ public class ClassicBoard extends JPanel {
         drawBackgroundImage( g );
         message = "3";
         g.drawString( message, 410, 300 );
-        Sounds.loadAndPlay( beepSoundLocation, 0 );
+        new Sound("sounds/Beep.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
         drawBackgroundImage( g );
         message = "2";
         g.drawString( message, 410, 300 );
-        Sounds.loadAndPlay( beepSoundLocation, 0 );
+        new Sound("sounds/Beep.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
         drawBackgroundImage( g );
         message = "1";
         g.drawString( message, 410, 300 );
-        Sounds.loadAndPlay( beepSoundLocation, 0 );
+        new Sound("sounds/Beep.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
         drawBackgroundImage( g );
         message = "GO!";
         g.drawString( message, 360, 300 );
-        Sounds.loadAndPlay( goSoundLocation, 0 );
+        new Sound("sounds/Go.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
@@ -676,7 +667,7 @@ public class ClassicBoard extends JPanel {
         if ( !laser.isVisible() && ctrlDown ) {
             laser = new LaserBeam( rocketship.getX(), rocketship.getY() );
             laser.setVisible( true ); 
-            Sounds.loadAndPlay( laserSoundLocation, 0 );
+            new Sound("sounds/Laser.wav").play();
         }
         
         if ( laser.isVisible() ) {
@@ -713,7 +704,7 @@ public class ClassicBoard extends JPanel {
                         alien.setImage( image.getImage() );
                         alien.setDying( true );
                         laser.die();
-                        Sounds.loadAndPlay( alienSoundLocation, 0 );
+                        new Sound("sounds/Alien.wav").play();
                         alienDeaths++;
                         if ( alienDeaths % 10 == 0 ) {
                             speedIncrease += 1;
@@ -746,9 +737,7 @@ public class ClassicBoard extends JPanel {
                     alienship.setImage( image.getImage() );
                     alienship.setDying( true );
                     laser.die();
-                    alienshipSound.stop();
-                    alienshipSound.rewind();
-                    Sounds.loadAndPlay( powerupSoundLocation, 0 );
+                    new Sound("sounds/Powerup.wav").play();
                     multiplier = r.nextInt(10) + 1;
                     scoreCount += ( 50 * multiplier );
                     drawBonus = true;
@@ -822,7 +811,7 @@ public class ClassicBoard extends JPanel {
                     repaint();
                     scoreCount = initialScore;
                     score = Integer.toString( scoreCount );
-                    Sounds.loadAndPlay( explosionSoundLocation, 0 );
+                    new Sound("sounds/Explosion.wav").play();
                     if ( lives > 0 ) {
                         timer.stop();
                         g.drawImage( new ImageIcon( getClass().getResource( "images/invasion.png" ) ).getImage(), 300, 0, this );
@@ -908,15 +897,11 @@ public class ClassicBoard extends JPanel {
                     case 4: speed = 8; break;
                 }
                 alienship.setVisible( true );
-                alienshipSound.stop();
-                alienshipSound.rewind();
-                alienshipSound.start();
+                new Sound("sounds/Alienship.wav").play();
             } 
         } else {
             alienship.move( course, speed );
             if ( ( alienship.getX()  < -80 ) ||( alienship.getX() > 880 ) ) {
-                alienshipSound.stop();
-                alienshipSound.rewind();
                 alienship.die();
             }
         }
@@ -938,7 +923,7 @@ public class ClassicBoard extends JPanel {
                 fireball.setDestroyed( false );
                 fireball.setX( alien.getX() );
                 fireball.setY( alien.getY() );
-                Sounds.loadAndPlay( fireballSoundLocation, 0 );
+                new Sound("sounds/Fireball.wav").play();
             }
             
             int fireballX = fireball.getX();
@@ -982,14 +967,12 @@ public class ClassicBoard extends JPanel {
                     } else {
                         ImageIcon image = new ImageIcon( this.getClass().getResource( explosion ) );
                         Graphics g = getGraphics();
-                        alienshipSound.stop();
-                        alienshipSound.rewind();
                         rocketship.setImage( image.getImage() );
                         rocketship.setDying( true );
                         fireball.setDestroyed( true );
                         lives--;
                         repaint();
-                        Sounds.loadAndPlay( explosionSoundLocation, 0 );
+                        new Sound("sounds/Explosion.wav").play();
                         if ( lives > 0 ) {
                             if ( laser.isVisible() ) {
                                 laser.die();
@@ -1124,8 +1107,6 @@ public class ClassicBoard extends JPanel {
                     if ( timer != null ) {
                         timer.stop();
                     }
-                    alienshipSound.stop();
-                    alienshipSound.rewind();
                     drawPause( g );
                 }
             } else if ( code == KeyEvent.VK_M || code == 109 ) {
@@ -1135,8 +1116,6 @@ public class ClassicBoard extends JPanel {
                 frame.remove( load );
                 frame.remove( back );
                 frame.remove( save );
-                alienshipSound.stop();
-                alienshipSound.rewind();
                 setVisible( false );
                 frame.add( new ModesPanel( frame ) );
                 frame.setVisible( false );
@@ -1155,8 +1134,6 @@ public class ClassicBoard extends JPanel {
                 load.setVisible( false );
                 back.setVisible( false );
                 save.setVisible( false );
-                alienshipSound.stop();
-                alienshipSound.rewind();
                 alienDeaths = 0;
                 speedIncrease = 0;
                 counter = 0;
@@ -1186,8 +1163,6 @@ public class ClassicBoard extends JPanel {
                 load.setVisible( false );
                 back.setVisible( false );
                 save.setVisible( false );
-                alienshipSound.stop();
-                alienshipSound.rewind();
                 alienDeaths = 0;
                 renewShields = false;
                 roundOver = false;

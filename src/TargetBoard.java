@@ -17,15 +17,14 @@ public class TargetBoard extends JPanel {
     private Flame flame;
     private Alien alien;
     private AlienShip alienship;
-    private Vector aliens;
+    private Vector<Alien> aliens;
     private Enumeration vector;
     private LaserBeam laser;
     private BackgroundImage background;
     private Timer timer;
     private JFrame frame;
     private DecimalFormat decimal;
-    private Sounds alienshipSound;
-    private JComboBox timeLimit;
+    private JComboBox<String> timeLimit;
     
     private int alienX = 160;
     private int alienY = -50;
@@ -59,19 +58,10 @@ public class TargetBoard extends JPanel {
     private String time = " ";
     private String message;
     private String explosion = "images/explosion.gif";
-    private String alienSoundLocation = "sounds/Alien.wav";
-    private String alienshipSoundLocation = "sounds/Alienship.wav";
-    private String laserSoundLocation = "sounds/Laser.wav";
-    private String beepSoundLocation = "sounds/Beep.wav";
-    private String goSoundLocation = "sounds/Go.wav";
-    private String powerupSoundLocation = "sounds/Powerup.wav";
-    private String fireballSoundLocation = "sounds/Fireball.wav";
-    private String explosionSoundLocation = "sounds/Explosion.wav";
     
     
     public TargetBoard( JFrame f ) {
         background = new BackgroundImage();
-        alienshipSound = new Sounds( alienshipSoundLocation );
         title = new ImageIcon( getClass().getResource( "images/targetmode.png" ) );
         addKeyListener( new KeyInputHandler() );
         setFocusable( true );
@@ -81,8 +71,10 @@ public class TargetBoard extends JPanel {
         setDoubleBuffered( true );
         frame = f;
         frame.setCursor( new Cursors( "curGreen.png", "Green" ).getCursor() );
+		frame.setVisible(false);
+		frame.setVisible(true);
         
-        timeLimit = new JComboBox();
+        timeLimit = new JComboBox<String>();
         for ( int x = 10; x <= 90; x += 10 ) {
             timeLimit.addItem( new String( x + " Seconds" ) );
         }
@@ -110,7 +102,7 @@ public class TargetBoard extends JPanel {
         countDown( g );
         
         decimal = new DecimalFormat( "00" );        
-        aliens = new Vector( INITIAL_SIZE, 10 );
+        aliens = new Vector<Alien>( INITIAL_SIZE, 10 );
         rocketship = new RocketShip();
         alienship = new AlienShip();
         alienship.setVisible( false );
@@ -129,8 +121,6 @@ public class TargetBoard extends JPanel {
                     fireballAnimations();
                     ctr++;
                     if ( seconds == 0 && minutes == 0 ) {
-                        alienshipSound.stop();
-                        alienshipSound.rewind();
                         gameRunning = false;
                     }
                     if ( drawBonus ) {
@@ -398,28 +388,28 @@ public class TargetBoard extends JPanel {
         drawBackgroundImage( g );
         message = "3";
         g.drawString( message, 410, 300 );
-        Sounds.loadAndPlay( beepSoundLocation, 2 );
+        new Sound("sounds/Beep.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
         drawBackgroundImage( g );
         message = "2";
         g.drawString( message, 410, 300 );
-        Sounds.loadAndPlay( beepSoundLocation, 2 );
+        new Sound("sounds/Beep.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
         drawBackgroundImage( g );
         message = "1";
         g.drawString( message, 410, 300 );
-        Sounds.loadAndPlay( beepSoundLocation, 2 );
+        new Sound("sounds/Beep.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
         drawBackgroundImage( g );
         message = "GO!";
         g.drawString( message, 360, 300 );
-        Sounds.loadAndPlay( goSoundLocation, 2 );
+        new Sound("sounds/Go.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
@@ -458,7 +448,6 @@ public class TargetBoard extends JPanel {
         flame.move();
     }
     
-    @SuppressWarnings("unchecked")
     public void alienAnimations() {
         while ( aliensInit < 10 ) {
             Random num = new Random();
@@ -556,15 +545,11 @@ public class TargetBoard extends JPanel {
                     case 4: speed = 8; break;
                 }
                 alienship.setVisible( true );
-                alienshipSound.stop();
-                alienshipSound.rewind();
-                alienshipSound.start();
+                new Sound("sounds/Alienship.wav").play();
             } 
         } else {
             alienship.move( course, speed );
             if ( ( alienship.getX()  < -80 ) ||( alienship.getX() > 880 ) ) {
-                alienshipSound.stop();
-                alienshipSound.rewind();
                 alienship.die();
             }
         }
@@ -574,7 +559,7 @@ public class TargetBoard extends JPanel {
         if ( !laser.isVisible() && ctrlDown ) {
             laser = new LaserBeam( rocketship.getX(), rocketship.getY() );
             laser.setVisible( true );
-            Sounds.loadAndPlay( laserSoundLocation, 2 );
+            new Sound("sounds/Laser.wav").play();
         }
         if ( laser.isVisible() ) {
             int laserX = laser.getX();
@@ -592,7 +577,7 @@ public class TargetBoard extends JPanel {
                         alien.setImage( image.getImage() );
                         alien.setDying( true );
                         laser.die();
-                        Sounds.loadAndPlay( alienSoundLocation, 2 );
+                        new Sound("sounds/Alien.wav").play();
                         alienDeaths++;
                         if ( alien.getSpecies() == 0 ) {
                             scoreCount += 5;
@@ -615,9 +600,7 @@ public class TargetBoard extends JPanel {
                     alienship.setImage( image.getImage() );
                     alienship.setDying( true );
                     laser.die();
-                    alienshipSound.stop();
-                    alienshipSound.rewind();
-                    Sounds.loadAndPlay( powerupSoundLocation, 1 );
+                    new Sound("sounds/Powerup.wav").play();
                     multiplier = r.nextInt(10) + 1;
                     scoreCount += ( 50 * multiplier );
                     alienDeaths += 2;
@@ -647,7 +630,7 @@ public class TargetBoard extends JPanel {
                 fireball.setDestroyed( false );
                 fireball.setX( alien.getX() );
                 fireball.setY( alien.getY() );
-                Sounds.loadAndPlay( fireballSoundLocation, 2 );
+                new Sound("sounds/Fireball.wav").play();
             }
             
             int fireballX = fireball.getX();
@@ -666,7 +649,7 @@ public class TargetBoard extends JPanel {
                         rocketship.setDying( true );
                         fireball.setDestroyed( true );
                         lives -= 1;
-                        Sounds.loadAndPlay( explosionSoundLocation, 2 );
+                        new Sound("sounds/Explosion.wav").play();
                         if ( lives > 0 ) {
                             timer.stop();
                             g.drawImage( rocketship.getImage(), rocketship.getX(), rocketship.getY(), this );
@@ -696,8 +679,6 @@ public class TargetBoard extends JPanel {
                             flame.setVisible( false );
                             timer.start();
                         } else {
-                            alienshipSound.stop();
-                            alienshipSound.rewind();
                             g.drawImage( rocketship.getImage(), rocketship.getX(), rocketship.getY(), this );
                             try {
                                 Thread.sleep( 500 );
@@ -789,8 +770,6 @@ public class TargetBoard extends JPanel {
                 } else {
                     Graphics g = getGraphics();
                     gamePaused = true;
-                    alienshipSound.stop();
-                    alienshipSound.rewind();
                     if ( timer != null ) {
                         timer.stop();
                     }
@@ -802,8 +781,6 @@ public class TargetBoard extends JPanel {
                     timer.stop();
                 }
                 frame.remove( timeLimit );
-                alienshipSound.stop();
-                alienshipSound.rewind();
                 setVisible( false );
                 frame.add( new ModesPanel( frame ) );
                 frame.setVisible( false );
@@ -818,8 +795,6 @@ public class TargetBoard extends JPanel {
                     timer.stop();
                 }
                 timeLimit.setVisible( false );
-                alienshipSound.stop();
-                alienshipSound.rewind();
                 shields = false;
                 course = 0;
                 speed = 0;

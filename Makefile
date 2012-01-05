@@ -11,7 +11,7 @@ JAR := jar
 all: $(program_NAME)
 
 $(program_NAME): $(program_SRCS)
-	$(JAVAC) $(program_SRCS) -d ./
+	$(JAVAC) -Xlint:unchecked $(program_SRCS) -d ./
 	
 install:
 	cp -r resources/cursors/ mooninvaders/cursors

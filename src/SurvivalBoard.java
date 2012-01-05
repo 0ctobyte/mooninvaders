@@ -61,14 +61,7 @@ public class SurvivalBoard extends JPanel {
     private String score = " ";
     private String message;
     private String time = " ";
-    private String explosion = "images/explosion.gif";
-    private String alienSoundLocation = "sounds/Alien.wav";
-    private String laserSoundLocation = "sounds/Laser.wav";
-    private String beepSoundLocation = "sounds/Beep.wav";
-    private String goSoundLocation = "sounds/Go.wav";
-    private String fireballSoundLocation = "sounds/Fireball.wav";
-    private String explosionSoundLocation = "sounds/Explosion.wav";
-    private String powerupSoundLocation = "sounds/Powerup.wav";
+	private String explosion = "images/explosion.gif";
     
     public SurvivalBoard( JFrame f ) {
         background = new BackgroundImage();
@@ -82,6 +75,8 @@ public class SurvivalBoard extends JPanel {
         setDoubleBuffered( true );
         frame = f;
         frame.setCursor( new Cursors( "curBlue.png", "Blue" ).getCursor() );
+		frame.setVisible(false);
+		frame.setVisible(true);
     }
     
     @SuppressWarnings("unchecked")
@@ -286,7 +281,7 @@ public class SurvivalBoard extends JPanel {
                     detonateBomb2 = false;
                     ctrBomb = 0;
                     ctr5 = 15;
-                    Sounds.loadAndPlay( explosionSoundLocation, 1 );
+                    new Sound("sounds/Explosion.wav").play();
                 }
             }
             // g.drawRect( bomb.getX(), bomb.getY(), 25, 30 );
@@ -469,28 +464,28 @@ public class SurvivalBoard extends JPanel {
         drawBackgroundImage( g );
         message = "3";
         g.drawString( message, 410, 300 );
-        Sounds.loadAndPlay( beepSoundLocation, 1 );
+        new Sound("sounds/Beep.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
         drawBackgroundImage( g );
         message = "2";
         g.drawString( message, 410, 300 );
-        Sounds.loadAndPlay( beepSoundLocation, 1 );
+        new Sound("sounds/Beep.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
         drawBackgroundImage( g );
         message = "1";
         g.drawString( message, 410, 300 );
-        Sounds.loadAndPlay( beepSoundLocation, 1 );
+        new Sound("sounds/Beep.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
         drawBackgroundImage( g );
         message = "GO!";
         g.drawString( message, 360, 300 );
-        Sounds.loadAndPlay( goSoundLocation, 1 );
+        new Sound("sounds/Go.wav").play();
         try {
             Thread.sleep( 1000 );
         } catch ( InterruptedException e ) {}
@@ -544,7 +539,7 @@ public class SurvivalBoard extends JPanel {
                 if ( !laser[a].isVisible() && ctr3 >= laserSpread ) {
                     laser[a] = new LaserBeam( rocketship.getX(), rocketship.getY() );
                     laser[a].setVisible( true );
-                    Sounds.loadAndPlay( laserSoundLocation, 1 );
+                    new Sound("sounds/Laser.wav").play();
                     ctr3 = 0;
                 }                
             }
@@ -566,7 +561,7 @@ public class SurvivalBoard extends JPanel {
                             alien.setImage( image.getImage() );
                             alien.setDying( true );
                             laser[a].die();
-                            Sounds.loadAndPlay( alienSoundLocation, 1 );
+                            new Sound("sounds/Alien.wav").play();
                             alienDeaths++;
                             if ( alienDeaths % 30 == 0 ) {
                                 if ( direction < 0 ) {
@@ -640,7 +635,7 @@ public class SurvivalBoard extends JPanel {
                           ImageIcon image = new ImageIcon( this.getClass().getResource( explosion ) );
                           alien.setImage( image.getImage() );
                           alien.setDying( true );
-                          Sounds.loadAndPlay( alienSoundLocation, 1 );
+                          new Sound("sounds/Alien.wav").play();
                           alienDeaths++;
                           if ( alienDeaths % 30 == 0 ) {
                               if ( direction < 0 ) {
@@ -679,7 +674,7 @@ public class SurvivalBoard extends JPanel {
                             ImageIcon image = new ImageIcon( this.getClass().getResource( explosion ) );
                             alien.setImage( image.getImage() );
                             alien.setDying( true );
-                            Sounds.loadAndPlay( alienSoundLocation, 1 );
+                            new Sound("sounds/Laser.wav").play();
                             alienDeaths++;
                             if ( alienDeaths % 30 == 0 ) {
                                 if ( direction < 0 ) {
@@ -718,7 +713,7 @@ public class SurvivalBoard extends JPanel {
                             ImageIcon image = new ImageIcon( this.getClass().getResource( explosion ) );
                             alien.setImage( image.getImage() );
                             alien.setDying( true );
-                            Sounds.loadAndPlay( alienSoundLocation, 1 );
+                            new Sound("sounds/Laser.wav").play();
                             alienDeaths++;
                             if ( alienDeaths % 30 == 0 ) {
                                 if ( direction < 0 ) {
@@ -841,7 +836,7 @@ public class SurvivalBoard extends JPanel {
                     Graphics g = getGraphics();
                     rocketship.setImage( new ImageIcon( getClass().getResource( explosion ) ).getImage() );
                     lives -= 1;
-                    Sounds.loadAndPlay( explosionSoundLocation, 0 );
+                    new Sound("sounds/Explosion.wav").play();
                     if ( lives > 0 ) {
                         timer.stop();
                         g.drawImage( new ImageIcon( getClass().getResource( "images/invasion.png" ) ).getImage(), 300, 0, this );
@@ -919,7 +914,7 @@ public class SurvivalBoard extends JPanel {
                 upgrade.setDestroyed( false );
                 upgrade.setX( alien.getX() );
                 upgrade.setY( alien.getY() );
-                Sounds.loadAndPlay( fireballSoundLocation, 1 );
+                new Sound("sounds/Fireball.wav").play();
             }
             
             int upgradeX = upgrade.getX();
@@ -939,7 +934,7 @@ public class SurvivalBoard extends JPanel {
                             ctrLaser += 250;
                             laserSpread = 4;
                             scoreCount += 10;
-                            Sounds.loadAndPlay( powerupSoundLocation, 1 );
+                            new Sound("sounds/Powerup.wav").play();
                         }
                     }
                 } else if ( upgradeType == Alien.HEALTH ) {
@@ -953,7 +948,7 @@ public class SurvivalBoard extends JPanel {
                                 lives = 6;
                             }
                             scoreCount += 10;
-                            Sounds.loadAndPlay( powerupSoundLocation, 1 );
+                            new Sound("sounds/Powerup.wav").play();
                         }
                     }
                 } else if ( upgradeType == Alien.SHIELD ) {
@@ -965,7 +960,7 @@ public class SurvivalBoard extends JPanel {
                             shields = true;
                             ctrShields += 250;
                             scoreCount += 10;
-                            Sounds.loadAndPlay( powerupSoundLocation, 1 );
+                            new Sound("sounds/Powerup.wav").play();
                         }
                     }
                 } else {
@@ -979,7 +974,7 @@ public class SurvivalBoard extends JPanel {
                                 bombs = 6;
                             }
                             scoreCount += 10;
-                            Sounds.loadAndPlay( powerupSoundLocation, 1 );
+							new Sound("sounds/Powerup.wav").play();
                         }
                     }
                 }
@@ -1016,7 +1011,7 @@ public class SurvivalBoard extends JPanel {
                 fireball.setDestroyed( false );
                 fireball.setX( alien.getX() );
                 fireball.setY( alien.getY() );
-                Sounds.loadAndPlay( fireballSoundLocation, 1 );
+                new Sound("sounds/Fireball.wav").play();
             }
             
             int fireballX = fireball.getX();
@@ -1046,7 +1041,7 @@ public class SurvivalBoard extends JPanel {
                         rocketship.setDying( true );
                         fireball.setDestroyed( true );
                         lives -= 1;
-                        Sounds.loadAndPlay( explosionSoundLocation, 1 );
+                        new Sound("sounds/Explosion.wav").play();
                         if ( lives > 0 ) {
                             timer.stop();
                             g.drawImage( rocketship.getImage(), rocketship.getX(), rocketship.getY(), this );

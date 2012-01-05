@@ -12,13 +12,10 @@ public class ModesPanel extends JPanel {
     private ImageIcon title;
     private String message;
     private JFrame frame;
-    private Sounds buttonSound;
-    private String buttonSoundLocation = "sounds/Button.wav";
     
     public ModesPanel( JFrame f ) {
         image = new ImageIcon( getClass().getResource("images/background.jpg") );
         title = new ImageIcon( getClass().getResource( "images/Modes.png" ) );
-        buttonSound = new Sounds( buttonSoundLocation );
         setLayout( null );
         setBackground( Color.BLACK );
         addKeyListener( new KeyInputHandler() );
@@ -38,9 +35,7 @@ public class ModesPanel extends JPanel {
                 frame.pack();
                 frame.setVisible( false );
                 frame.setVisible( true );
-                buttonSound.stop();
-                buttonSound.rewind();
-                buttonSound.start();
+                new Sound("sounds/Button.wav").play();
             }
         });  
 //        survivalMode.setEnabled( false );
@@ -57,9 +52,7 @@ public class ModesPanel extends JPanel {
                 frame.pack();
                 frame.setVisible( false );
                 frame.setVisible( true );
-                buttonSound.stop();
-                buttonSound.rewind();
-                buttonSound.start();
+                new Sound("sounds/Button.wav").play();
             }
         });    
         add( classicMode );
@@ -75,9 +68,7 @@ public class ModesPanel extends JPanel {
                 frame.pack();
                 frame.setVisible( false );
                 frame.setVisible( true );
-                buttonSound.stop();
-                buttonSound.rewind();
-                buttonSound.start();
+                new Sound("sounds/Button.wav").play();
             }
         });    
 //        targetPractice.setEnabled( false );
@@ -92,9 +83,7 @@ public class ModesPanel extends JPanel {
                 setVisible( false );
                 frame.add( new HowToPlay( frame ) );
                 frame.pack();
-                buttonSound.stop();
-                buttonSound.rewind();
-                buttonSound.start();
+                new Sound("sounds/Button.wav").play();
             }
         });
         add( howToPlay );
@@ -105,9 +94,7 @@ public class ModesPanel extends JPanel {
         exit.setBounds( 525, 550, 245, 50 );
         exit.addActionListener( new ActionListener() {
             public void actionPerformed( ActionEvent e ) {
-                buttonSound.stop();
-                buttonSound.rewind();
-                buttonSound.start();
+                new Sound("sounds/Button.wav").play();
                 System.exit(0);
             }
         });

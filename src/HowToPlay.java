@@ -16,7 +16,6 @@ public class HowToPlay extends JPanel {
     private JButton next;
     private JButton previous;
     private JButton back;
-    private String buttonSoundLocation = "sounds/Button.wav";
     
     public HowToPlay( JFrame f ) {
         image = new ImageIcon( getClass().getResource("images/background.jpg") );
@@ -37,7 +36,7 @@ public class HowToPlay extends JPanel {
             public void actionPerformed( ActionEvent e ) {
                 setVisible( false );
                 frame.add( new ModesPanel( frame ) );
-                Sounds.loadAndPlay( buttonSoundLocation, 4 );
+                new Sound("sounds/Button.wav").play();
             }
         });
         add( back );
@@ -51,7 +50,7 @@ public class HowToPlay extends JPanel {
                 ctr++;
                 add( previous );
                 repaint();
-                Sounds.loadAndPlay( buttonSoundLocation, 4 );
+                new Sound("sounds/Button.wav").play();
             }
         });
         add( next );
@@ -65,7 +64,7 @@ public class HowToPlay extends JPanel {
                 ctr--;
                 add( next );
                 repaint();
-                Sounds.loadAndPlay( buttonSoundLocation, 4 );
+                new Sound("sounds/Button.wav").play();
             }
         });
         add( previous );
