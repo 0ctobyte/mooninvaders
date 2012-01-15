@@ -16,7 +16,7 @@ public class SurvivalBoard extends JPanel {
     private RocketShip rocketship;
     private Flame flame;
     private Alien alien;
-    private Vector aliens;
+    private Vector<Alien> aliens;
     private Enumeration vector;
     private LaserBeam[] laser;
     private Bomb bomb;
@@ -79,12 +79,11 @@ public class SurvivalBoard extends JPanel {
 		frame.setVisible(true);
     }
     
-    @SuppressWarnings("unchecked")
     public void startGame() {
         Graphics g = getGraphics();
         countDown( g );
         decimal = new DecimalFormat( "00" );
-        aliens = new Vector( INITIAL_SIZE, 10 );
+        aliens = new Vector<Alien>( INITIAL_SIZE, 10 );
         
         for ( int a = 0; a < 6; a++ ) {
             for ( int b = 0; b < 10; b++ ) {
@@ -741,7 +740,6 @@ public class SurvivalBoard extends JPanel {
         }    
     }
     
-    @SuppressWarnings("unchecked")
     public void alienAnimations() {
         vector = aliens.elements();
         while ( vector.hasMoreElements() )  {

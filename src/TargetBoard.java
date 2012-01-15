@@ -24,7 +24,7 @@ public class TargetBoard extends JPanel {
     private Timer timer;
     private JFrame frame;
     private DecimalFormat decimal;
-    private JComboBox<String> timeLimit;
+    private JComboBox timeLimit;
     
     private int alienX = 160;
     private int alienY = -50;
@@ -74,7 +74,7 @@ public class TargetBoard extends JPanel {
 		frame.setVisible(false);
 		frame.setVisible(true);
         
-        timeLimit = new JComboBox<String>();
+        timeLimit = new JComboBox();
         for ( int x = 10; x <= 90; x += 10 ) {
             timeLimit.addItem( new String( x + " Seconds" ) );
         }

@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.util.*;
 import java.io.*;
 
-public class Shields extends Vector {
+public class Shields extends Vector<ShieldFragment> {
     
     ImageIcon image;
     ShieldFragment sf;
@@ -13,7 +13,6 @@ public class Shields extends Vector {
     int x;
     int y;
     
-    @SuppressWarnings("unchecked")
     public Shields( int x, int y ) {        
         for ( int a = 0; a < 5; a++ ) {
             sf = new ShieldFragment( x, y + 14 * a );

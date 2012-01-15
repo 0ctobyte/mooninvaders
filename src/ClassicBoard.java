@@ -22,7 +22,7 @@ public class ClassicBoard extends JPanel {
     private Alien alien;
     private Shields shield[];
     private ShieldFragment shieldfrag;
-    private Vector aliens;
+    private Vector<Alien> aliens;
     private Enumeration vector;
     private LaserBeam laser;
     private BackgroundImage background;
@@ -210,11 +210,10 @@ public class ClassicBoard extends JPanel {
         save.setVisible( false );
     }
     
-    @SuppressWarnings("unchecked")
     public void startGame() {
         Graphics g = getGraphics();
         countDown( g );      
-        aliens = new Vector( INITIAL_SIZE, 10 );
+        aliens = new Vector<Alien>( INITIAL_SIZE, 10 );
         
         for ( int a = 0; a < rows; a++ ) {
             for ( int b = 0; b < 10; b++ ) {
@@ -753,7 +752,6 @@ public class ClassicBoard extends JPanel {
         }
     }
     
-    @SuppressWarnings("unchecked")
     public void alienAnimations() {
         vector = aliens.elements();
         while ( vector.hasMoreElements() )  {
